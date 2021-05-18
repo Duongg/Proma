@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "792740602682",
+    "project_id": "proma-4df78",
+    "storage_bucket": "proma-4df78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792740602682:android:99c3814392e4bdf98e6603",
+        "android_client_info": {
+          "package_name": "com.example.proma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "792740602682-9ohiucsd4rkkq2kncfnvhucoh3etagi0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYP8cXVmovgnxpwX7Y_hr-fvNiqvq2DhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "792740602682-9ohiucsd4rkkq2kncfnvhucoh3etagi0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
