@@ -2,6 +2,7 @@ package com.example.proma.firebase
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import com.example.proma.activities.MainActivity
 import com.example.proma.activities.ProfileActivity
 import com.example.proma.activities.SignInActivity
@@ -33,6 +34,28 @@ class FireStore {
         }
         return currentUserID
     }
+
+    fun updateUserProfileData(activity: ProfileActivity, userHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.USERS)
+            .document(getCurretnUserId())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                Log.i(activity.javaClass.simpleName, "Profile Data updated successfully!")
+                Toast.makeText(activity, "Profile Data updated successfully", Toast.LENGTH_SHORT).show()
+                activity.updateProfileSuccess()
+            }
+            .addOnFailureListener{
+                e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while creating a board",
+                    e
+                )
+                Toast.makeText(activity, "Profile data update failed", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
     fun loadUserData(activity: Activity) {
         mFireStore.collection(Constants.USERS)
