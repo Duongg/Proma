@@ -1,7 +1,6 @@
 package com.example.proma.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -56,7 +55,7 @@ class SignInActivity : BaseActivity() {
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         Log.d("SIGN IN", "signInWithEmai:success")
-                        FireStore().signInUser(this)
+                        FireStore().loadUserData(this)
                     } else {
                         Log.w("SIGN IN", "signInWithEmai:failure", task.exception)
                         Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show()
