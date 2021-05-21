@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.proma.R
 import com.example.proma.firebase.FireStore
 import com.example.proma.models.User
+import com.example.proma.utils.Constants
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,6 +23,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         const val MY_PROFILE_REQUEST_CODE: Int = 11
     }
 
+    private lateinit var mUsername: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,6 +33,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nav_view.setNavigationItemSelectedListener(this)
 
         FireStore().loadUserData(this)
+
+        fab_create_board.setOnClickListener {
+           val intent = Intent(this, CreateBoardActivity::class.java)
+            intent.putExtra(Constants.NAME, mUsername)
+            startActivity(intent)
+        }
     }
 
     private fun setupActionBar() {
@@ -50,6 +59,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateNavigationUserDetails(user: User) {
+        mUsername = user.name
+
         Glide
             .with(this)
             .load(user.image)
@@ -72,8 +83,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE) {
             FireStore().loadUserData(this)
-        }else{
-            Log.e("Cancelled","Cancelled")
+        } else {
+            Log.e("Cancelled", "Cancelled")
         }
     }
 
