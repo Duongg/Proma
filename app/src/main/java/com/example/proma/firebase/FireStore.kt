@@ -3,10 +3,8 @@ package com.example.proma.firebase
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
-import com.example.proma.activities.MainActivity
-import com.example.proma.activities.ProfileActivity
-import com.example.proma.activities.SignInActivity
-import com.example.proma.activities.SignUpActivity
+import com.example.proma.activities.*
+import com.example.proma.models.Board
 import com.example.proma.models.User
 import com.example.proma.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +24,22 @@ class FireStore {
             }
     }
 
+    fun createBoard(activity: CreateBoardActivity, board: Board) {
+        mFireStore.collection(Constants.BOARDS)
+            .document()
+            .set(board, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "Board has created successfully")
+                Toast.makeText(activity, "Board has created successfully", Toast.LENGTH_SHORT)
+                    .show()
+                activity.createBoardSuccessfully()
+            }
+            .addOnFailureListener { exception ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Board has created failed", exception)
+            }
+    }
+
     fun getCurretnUserId(): String {
         var currentUser = FirebaseAuth.getInstance().currentUser
         var currentUserID = ""
@@ -35,17 +49,17 @@ class FireStore {
         return currentUserID
     }
 
-    fun updateUserProfileData(activity: ProfileActivity, userHashMap: HashMap<String, Any>){
+    fun updateUserProfileData(activity: ProfileActivity, userHashMap: HashMap<String, Any>) {
         mFireStore.collection(Constants.USERS)
             .document(getCurretnUserId())
             .update(userHashMap)
             .addOnSuccessListener {
                 Log.i(activity.javaClass.simpleName, "Profile Data updated successfully!")
-                Toast.makeText(activity, "Profile Data updated successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Profile Data updated successfully", Toast.LENGTH_SHORT)
+                    .show()
                 activity.updateProfileSuccess()
             }
-            .addOnFailureListener{
-                e ->
+            .addOnFailureListener { e ->
                 activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,
@@ -63,8 +77,8 @@ class FireStore {
             .addOnSuccessListener { document ->
                 val loggedInUser = document.toObject(User::class.java)
                 if (loggedInUser != null) {
-                    when(activity){
-                        is SignInActivity ->{
+                    when (activity) {
+                        is SignInActivity -> {
                             activity.signInSuccess(loggedInUser)
                         }
                         is MainActivity -> {
@@ -77,8 +91,8 @@ class FireStore {
 
                 }
             }.addOnFailureListener { e ->
-                when(activity){
-                    is SignInActivity ->{
+                when (activity) {
+                    is SignInActivity -> {
                         activity.hideProgressDialog()
                     }
                     is MainActivity -> {
