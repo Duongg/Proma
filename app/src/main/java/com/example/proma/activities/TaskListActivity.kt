@@ -1,7 +1,10 @@
 package com.example.proma.activities
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proma.R
 import com.example.proma.adapters.TaskListItemAdapter
@@ -29,6 +32,22 @@ class TaskListActivity : BaseActivity() {
         FireStore().getBoardDetails(this, boardDocumentId)
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_member, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_members ->{
+                val intent = Intent(this, MemberActivity::class.java)
+                intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
     private fun setupActionBar() {
         setSupportActionBar(toolbar_task_list_activity)
         val actionBar = supportActionBar

@@ -31,4 +31,6 @@
     <string name="hint_list_name">List Name</string>
     <string name="hint_card_name">Card Name</string>
     <string name="action_add_card">Add Card</string>
+
+    <string name="members">Members</string>
 </resources>

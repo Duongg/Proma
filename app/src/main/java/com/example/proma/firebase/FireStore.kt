@@ -95,7 +95,6 @@ class FireStore {
             }
     }
 
-
     fun getCurretnUserId(): String {
         var currentUser = FirebaseAuth.getInstance().currentUser
         var currentUserID = ""
@@ -125,7 +124,6 @@ class FireStore {
                 Toast.makeText(activity, "Profile data update failed", Toast.LENGTH_SHORT).show()
             }
     }
-
 
     fun loadUserData(activity: Activity, readBoardList: Boolean = false) {
         mFireStore.collection(Constants.USERS)
@@ -159,4 +157,25 @@ class FireStore {
             }
     }
 
+    fun getAssignedMemebersListDetails(activity: MemberActivity, assignedTo: ArrayList<String>){
+        mFireStore.collection(Constants.USERS)
+            .whereIn(Constants.ID, assignedTo)
+            .get()
+            .addOnSuccessListener {
+                document ->
+                Log.e(activity.javaClass.simpleName, document.documents.toString())
+                val usersList: ArrayList<User> = ArrayList()
+
+                for (i in document.documents){
+                    val user = i.toObject(User::class.java)!!
+                    usersList.add(user)
+                }
+                activity.setUpMembersList(usersList)
+            }
+            .addOnFailureListener {
+                e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while get members list", e)
+            }
+    }
 }
