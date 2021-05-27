@@ -15,7 +15,10 @@ import com.example.proma.activities.TaskListActivity
 import com.example.proma.models.Task
 import kotlinx.android.synthetic.main.item_task.view.*
 
-open class TaskListItemAdapter(private val context: Context, private var list: ArrayList<Task>) :
+open class TaskListItemAdapter(
+    private val context: Context,
+    private var list: ArrayList<Task>
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_task, parent, false)
@@ -79,14 +82,14 @@ open class TaskListItemAdapter(private val context: Context, private var list: A
                     Toast.makeText(context, "Please Enter A List Name", Toast.LENGTH_SHORT).show()
                 }
             }
-            holder.itemView.ib_delete_list.setOnClickListener{
+            holder.itemView.ib_delete_list.setOnClickListener {
                 alertDialogForDeleteList(position, model.title)
             }
             holder.itemView.tv_add_card.setOnClickListener {
                 holder.itemView.tv_add_card.visibility = View.GONE
                 holder.itemView.cv_add_card.visibility = View.VISIBLE
             }
-            holder.itemView.ib_close_card_name.setOnClickListener{
+            holder.itemView.ib_close_card_name.setOnClickListener {
                 holder.itemView.tv_add_card.visibility = View.VISIBLE
                 holder.itemView.cv_add_card.visibility = View.GONE
             }
@@ -94,7 +97,7 @@ open class TaskListItemAdapter(private val context: Context, private var list: A
                 val cardName = holder.itemView.et_card_name.text.toString()
                 if (cardName.isNotEmpty()) {
                     if (context is TaskListActivity) {
-                        context.addCardToTaskList(position,cardName)
+                        context.addCardToTaskList(position, cardName)
                     }
                 } else {
                     Toast.makeText(context, "Please Enter A Card Name", Toast.LENGTH_SHORT).show()
@@ -111,26 +114,26 @@ open class TaskListItemAdapter(private val context: Context, private var list: A
     override fun getItemCount(): Int {
         return list.size
     }
-    private fun alertDialogForDeleteList(position: Int, title: String){
+
+    private fun alertDialogForDeleteList(position: Int, title: String) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Alert")
         builder.setMessage("Are you sure you want to delete $title ?")
         builder.setIcon(android.R.drawable.ic_dialog_alert)
-        builder.setPositiveButton("Yes"){
-            dialogInterface, which ->
+        builder.setPositiveButton("Yes") { dialogInterface, which ->
             dialogInterface.dismiss()
-            if(context is TaskListActivity){
+            if (context is TaskListActivity) {
                 context.deleteTaskList(position)
             }
         }
-        builder.setNegativeButton("No"){
-            dialogInterface, which ->
+        builder.setNegativeButton("No") { dialogInterface, which ->
             dialogInterface.dismiss()
         }
         val alertDialog: AlertDialog = builder.create()
         alertDialog.setCancelable(false)
         alertDialog.show()
     }
+
     private fun Int.toDp(): Int = (this / Resources.getSystem().displayMetrics.density).toInt()
 
     private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()

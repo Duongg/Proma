@@ -13,8 +13,10 @@ import kotlinx.android.synthetic.main.item_board.view.*
 open class BoardItemsAdapter(
     private val context: Context,
     private val list: ArrayList<Board>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var onClickListener: OnClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context).inflate(R.layout.item_board, parent, false)
@@ -50,7 +52,7 @@ open class BoardItemsAdapter(
     }
 
 
-    fun setOnClickListener(onClickListener: OnClickListener){
+    fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
     }
 
