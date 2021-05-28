@@ -83,7 +83,7 @@ class TaskListActivity : BaseActivity() {
     }
 
     fun createTaskList(taskListName: String) {
-        val task = Task(taskListName, FireStore().getCurretnUserId())
+        val task = Task(taskListName, FireStore().getCurrentUserId())
         mBoardDetails.taskList.add(0, task)
         mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
         showProgressDialog(resources.getString(R.string.please_wait))
@@ -109,9 +109,9 @@ class TaskListActivity : BaseActivity() {
         mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
 
         val cardAssignUserList: ArrayList<String> = ArrayList()
-        cardAssignUserList.add(FireStore().getCurretnUserId())
+        cardAssignUserList.add(FireStore().getCurrentUserId())
 
-        val card = Card(cardName, FireStore().getCurretnUserId(), cardAssignUserList)
+        val card = Card(cardName, FireStore().getCurrentUserId(), cardAssignUserList)
 
         val cardList = mBoardDetails.taskList[position].cards
         cardList.add(card)
