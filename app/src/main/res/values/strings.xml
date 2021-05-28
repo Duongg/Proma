@@ -7,7 +7,7 @@
     <string name="sign_up">SIGN UP</string>
 
     <string name="sign_up_description_text">Enter Your Name, Email and Password to Sign Up</string>
-    <string name="sign_in_descripyion_text">Enter Your Email and Password to Sign In</string>
+    <string name="sign_in_description_text">Enter Your Email and Password to Sign In</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
@@ -33,4 +33,8 @@
     <string name="action_add_card">Add Card</string>
 
     <string name="members">Members</string>
+    <string name="add_member">Add Member</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add">ADD</string>
+    <string name="search_member">Search Member</string>
 </resources>
