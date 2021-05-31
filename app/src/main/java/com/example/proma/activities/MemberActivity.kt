@@ -1,5 +1,6 @@
 package com.example.proma.activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.view.Menu
@@ -20,6 +21,8 @@ class MemberActivity : BaseActivity() {
 
     private lateinit var mBoardDetails: Board
     private lateinit var mAssignedMembersList: ArrayList<User>
+    private var anyChangesMade: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member)
@@ -100,9 +103,17 @@ class MemberActivity : BaseActivity() {
         dialog.show()
     }
 
+    override fun onBackPressed() {
+        if(anyChangesMade){
+            setResult(Activity.RESULT_OK)
+        }
+        super.onBackPressed()
+    }
+
     fun assignMemberSuccess(user: User) {
         hideProgressDialog()
         mAssignedMembersList.add(user)
+        anyChangesMade = true
         setUpMembersList(mAssignedMembersList)
     }
 }
