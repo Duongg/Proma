@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.proma.activities.*
 import com.example.proma.models.Board
+import com.example.proma.models.Card
 import com.example.proma.models.User
 import com.example.proma.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -78,7 +79,7 @@ class FireStore {
             }
     }
 
-    fun addUpdateTaskList(activity: TaskListActivity, board: Board) {
+    fun addUpdateTaskList(activity: Activity, board: Board) {
         val taskListHashMap = HashMap<String, Any>()
         taskListHashMap[Constants.TASK_LIST] = board.taskList
 
@@ -87,10 +88,18 @@ class FireStore {
             .update(taskListHashMap)
             .addOnSuccessListener {
                 Log.e(activity.javaClass.simpleName, "Task list updated successfully")
-                activity.addUpdateTaskListSuccess()
+                if(activity is TaskListActivity){
+                    activity.addUpdateTaskListSuccess()
+                }else if(activity is CardDetailsActivity){
+                    activity.addUpdateTaskListSuccess()
+                }
             }
             .addOnFailureListener { exception ->
-                activity.hideProgressDialog()
+                if(activity is TaskListActivity) {
+                    activity.hideProgressDialog()
+                }else if(activity is CardDetailsActivity){
+                    activity.hideProgressDialog()
+                }
                 Log.e(activity.javaClass.simpleName, "Error while creating a task.", exception)
             }
     }
