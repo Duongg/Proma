@@ -14,6 +14,7 @@ import com.example.proma.firebase.FireStore
 import com.example.proma.models.Board
 import com.example.proma.models.Card
 import com.example.proma.models.Task
+import com.example.proma.models.User
 import com.example.proma.utils.Constants
 import kotlinx.android.synthetic.main.activity_task_list.*
 
@@ -21,7 +22,7 @@ class TaskListActivity : BaseActivity() {
 
     private lateinit var mBoardDetails: Board
     private lateinit var mBoardDocumentID: String
-
+    private lateinit var mAssignedMemberDetailList: ArrayList<User>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
@@ -54,6 +55,7 @@ class TaskListActivity : BaseActivity() {
         intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
         intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
         intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+        intent.putExtra(Constants.BOARD_MEMBERS_LIST, mAssignedMemberDetailList)
         startActivityForResult(intent, CARD_DETAILS_REQUEST_CODE)
     }
 
@@ -95,6 +97,9 @@ class TaskListActivity : BaseActivity() {
         rv_task_list.setHasFixedSize(true)
         val adapter = TaskListItemAdapter(this, board.taskList)
         rv_task_list.adapter = adapter
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStore().getAssignedMembersListDetails(this, mBoardDetails.assignTo)
 
     }
 
@@ -148,6 +153,11 @@ class TaskListActivity : BaseActivity() {
 
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStore().addUpdateTaskList(this, mBoardDetails)
+    }
+
+    fun assignBoardMembersDetailsList(list: ArrayList<User>) {
+        mAssignedMemberDetailList = list
+        hideProgressDialog()
     }
 
     companion object {
