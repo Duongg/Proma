@@ -119,6 +119,7 @@
                     android:textSize="@dimen/card_details_label_text_size" />
 
                 <TextView
+                    android:id="@+id/tv_select_due_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_details_value_marginTop"

@@ -5,9 +5,12 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proma.R
+import com.example.proma.activities.TaskListActivity
 import com.example.proma.models.Card
+import com.example.proma.models.SelectedMember
 import kotlinx.android.synthetic.main.item_card.view.*
 
 class CardListItemAdapter(
@@ -35,10 +38,50 @@ class CardListItemAdapter(
             }
             holder.itemView.tv_card_name.text = model.name
 
-            holder.itemView.setOnClickListener {
-                if (onClickListener != null) {
-                    onClickListener!!.onClick(position)
+            if ((context as TaskListActivity).mAssignedMemberDetailList.size > 0) {
+                val selectedMembersList: ArrayList<SelectedMember> = ArrayList()
+                for (i in context.mAssignedMemberDetailList.indices) {
+                    for (j in model.assignTo) {
+                        if (context.mAssignedMemberDetailList[i].id == j) {
+                            val selectedMembers = SelectedMember(
+                                context.mAssignedMemberDetailList[i].id,
+                                context.mAssignedMemberDetailList[i].image
+                            )
+                            selectedMembersList.add(selectedMembers)
+                        }
+                    }
                 }
+                if (selectedMembersList.size > 0) {
+                    if (selectedMembersList.size == 1 && selectedMembersList[0].id == model.createdBy) {
+                        holder.itemView.rv_card_selected_member_list.visibility = View.GONE
+                    } else {
+                        holder.itemView.rv_card_selected_member_list.visibility = View.VISIBLE
+
+                        holder.itemView.rv_card_selected_member_list.layoutManager =
+                            GridLayoutManager(context, 4)
+
+                        val adapter =
+                            CardMemberListItemsAdapter(context, selectedMembersList, false)
+                        holder.itemView.rv_card_selected_member_list.adapter = adapter
+
+                        adapter.setOnclickListener(object :
+                            CardMemberListItemsAdapter.OnClickListener {
+                            override fun onClick() {
+                                if (onClickListener != null) {
+                                    onClickListener!!.onClick(position)
+                                }
+                            }
+                        })
+                    }
+                } else {
+                    holder.itemView.rv_card_selected_member_list.visibility = View.GONE
+                }
+            }
+        }
+
+        holder.itemView.setOnClickListener {
+            if (onClickListener != null) {
+                onClickListener!!.onClick(position)
             }
         }
     }
