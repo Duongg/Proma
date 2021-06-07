@@ -22,7 +22,9 @@ class TaskListActivity : BaseActivity() {
 
     private lateinit var mBoardDetails: Board
     private lateinit var mBoardDocumentID: String
-    private lateinit var mAssignedMemberDetailList: ArrayList<User>
+    lateinit var mAssignedMemberDetailList: ArrayList<User>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
@@ -89,14 +91,6 @@ class TaskListActivity : BaseActivity() {
 
         hideProgressDialog()
         setupActionBar()
-        val addTaskList = Task(resources.getString(R.string.action_add_list))
-        board.taskList.add(addTaskList)
-
-        rv_task_list.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_task_list.setHasFixedSize(true)
-        val adapter = TaskListItemAdapter(this, board.taskList)
-        rv_task_list.adapter = adapter
 
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStore().getAssignedMembersListDetails(this, mBoardDetails.assignTo)
@@ -158,6 +152,23 @@ class TaskListActivity : BaseActivity() {
     fun assignBoardMembersDetailsList(list: ArrayList<User>) {
         mAssignedMemberDetailList = list
         hideProgressDialog()
+
+        val addTaskList = Task(resources.getString(R.string.action_add_list))
+        mBoardDetails.taskList.add(addTaskList)
+
+        rv_task_list.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_task_list.setHasFixedSize(true)
+        val adapter = TaskListItemAdapter(this, mBoardDetails.taskList)
+        rv_task_list.adapter = adapter
+    }
+
+    fun updateCardsInTaskList(taskListPosition: Int, cards: ArrayList<Card>){
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+        mBoardDetails.taskList[taskListPosition].cards = cards
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStore().addUpdateTaskList(this, mBoardDetails)
     }
 
     companion object {
